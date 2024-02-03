@@ -1,4 +1,5 @@
 <script setup>
+import {CopyableText} from 'qordial'
 import appsettings from '../appsettings'
 </script>
 
@@ -41,7 +42,7 @@ export default {
     </o-field>
 
     <o-field label="Code Repo" horizontal>
-      <span>{{ appsettings.appRepository }}</span>
+      <CopyableText :text="appsettings.appRepository" />
     </o-field>
 
     <o-field label="Dependencies" horizontal>
