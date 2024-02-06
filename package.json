@@ -1,6 +1,6 @@
 {
   "name": "qwiki",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "simple wiki app for QDN",
   "private": true,
   "type": "module",
