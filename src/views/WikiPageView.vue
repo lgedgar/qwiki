@@ -67,8 +67,11 @@ export default {
                 this.$refs.previewWrapper.querySelectorAll('a.qwiki').forEach(a => {
                     a.addEventListener('click', event => {
                         event.preventDefault()
-                        alert(`${event.target.pathname}`)
-                        this.$router.push(`/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${event.target.pathname}`)
+                        let page = event.target.pathname
+                        page = page.replace(/^\/render\/APP\/qwiki\//, '')
+                        alert(event.target.pathname)
+                        alert(page)
+                        this.$router.push(`/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${page}`)
                     })
                 })
             })
