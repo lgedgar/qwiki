@@ -3,6 +3,12 @@ import { mapStores } from 'pinia'
 import { useQordialAuthStore } from 'qordial'
 import { useWikiStore } from '@/stores/wiki'
 import { marked } from 'marked'
+import router from '../router'
+
+window.wikijump = (path) => {
+    router.push(path)
+}
+
 </script>
 
 <script>
@@ -25,12 +31,10 @@ export default {
         renderedContents() {
             let page = this.wikiStore.pageContent || ''
 
+            // nb. must replace [[XXX]] with internal "wikijump" link
             page = page.replace(/\[\[(?:(.+)\|)?(.+?)\]\]/, (match, p1, p2, offset, string) => {
-
-                // TODO: will simple anchor work, or must use router link?
                 const text = p1 || p2
-                // return `<router-link :to="/${this.wikiStore.authorName}/${this.wikiRoot.wikiIdentifier}/${p2}">${text}</router-link>`
-                return `<a href="qortal://APP/qwiki/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${p2}">${text}</a>`
+                return `<a href="#" onclick="window.wikijump('/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${p2}'); return false;">${text}</a>`
             })
 
             return marked.parse(page)
