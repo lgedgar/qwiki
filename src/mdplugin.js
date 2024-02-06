@@ -17,7 +17,7 @@ export default function qwiki_plugin (md) {
         // nb. qwiki class is used later to add the click handlers
         text = text.replace(/\[\[(?:([^\|\]]+)\|)?([^\]]+)\]\]/g, (match, p1, p2, offset, string) => {
             const linktext = p1 || p2
-            return `<a href="./${p2}" class="qwiki">${linktext}</a>`
+            return `<a href="${p2}" class="qwiki">${linktext}</a>`
         })
 
         return text

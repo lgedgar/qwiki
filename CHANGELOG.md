@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Add debug alert to test internal qwiki link path.
+
 ## [0.1.2] - 2024-02-06
 
 ### Changed
