@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Change how qwiki links are rendered (now via markdown-it plugin).
+- Use `<v-md-preview>` element for normal view wiki page, for consistency.
+
 
 ## [0.1.1] - 2024-02-05
 

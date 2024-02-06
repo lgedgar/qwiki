@@ -2,13 +2,6 @@
 import { mapStores } from 'pinia'
 import { useQordialAuthStore } from 'qordial'
 import { useWikiStore } from '@/stores/wiki'
-import { marked } from 'marked'
-import router from '../router'
-
-window.wikijump = (path) => {
-    router.push(path)
-}
-
 </script>
 
 <script>
@@ -27,18 +20,6 @@ export default {
     computed: {
         ...mapStores(useQordialAuthStore),
         ...mapStores(useWikiStore),
-
-        renderedContents() {
-            let page = this.wikiStore.pageContent || ''
-
-            // nb. must replace [[XXX]] with internal "wikijump" link
-            page = page.replace(/\[\[(?:(.+)\|)?(.+?)\]\]/, (match, p1, p2, offset, string) => {
-                const text = p1 || p2
-                return `<a href="#" onclick="window.wikijump('/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${p2}'); return false;">${text}</a>`
-            })
-
-            return marked.parse(page)
-        },
     },
 
     async activated() {
@@ -79,6 +60,17 @@ export default {
 
             this.pageContent = this.wikiStore.pageContent || "no content yet!"
             this.wikiLoaded = true
+
+            this.$nextTick(() => {
+
+                // add click event handlers to force router use
+                this.$refs.previewWrapper.querySelectorAll('a.qwiki').forEach(a => {
+                    a.addEventListener('click', event => {
+                        event.preventDefault()
+                        this.$router.push(`/${this.wikiStore.authorName}/${this.wikiStore.wikiIdentifier}/${event.target.pathname.slice(1)}`)
+                    })
+                })
+            })
         },
 
         jumpToPageUpdated(page) {
@@ -144,8 +136,9 @@ export default {
     </div>
 
     <div v-if="wikiLoaded"
-         v-html="renderedContents"
-         class="wiki-page-contents" />
+         ref="previewWrapper">
+      <v-md-preview :text="wikiStore.pageContent || ''" />
+    </div>
 
     <div v-else>
       <p class="block">
@@ -192,17 +185,3 @@ export default {
 
   </div>
 </template>
-
-<style>
-
-.wiki-page-contents h1 {
-    font-weight: bold;
-    font-size: 2rem;
-    margin-bottom: 2rem;
-}
-
-.wiki-page-contents p {
-    margin-bottom: 1rem;
-}
-
-</style>
